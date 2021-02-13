@@ -10,4 +10,7 @@ Notes:
     - \#\<Function for that week\>
 
 * Simply uncomment the line for the function and run main.py locally
+* Wherever information from external pages were used, links to these resources are shown in the following format
+
+    - Reference: \<Link to the resource\>
   
