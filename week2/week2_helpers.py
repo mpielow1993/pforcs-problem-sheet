@@ -1,3 +1,6 @@
+# Reference: https://stackoverflow.com/questions/736043/checking-if-a-string-can-be-converted-to-float-in-python 
+
+
 # Signature:   parse_float()
 # Params:   input
 # Description:   Returns true if input can be parsed to a float, false otherwise
