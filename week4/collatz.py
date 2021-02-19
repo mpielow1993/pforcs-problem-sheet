@@ -1,9 +1,15 @@
-from week4 import week4_helpers as w4h
+import helpers
 
 def collatz():
-    input_str = input('\nEnter any positive integer:   ')
+
+    limits = {
+        'min': 1,
+        'max': 1000
+    }
+
+    input_str = input(f'\nEnter any positive integer greater than {limits["min"]} and less than or equal to {limits["max"]}:   ')
     # Maximum allowed integer is 100 here for demo, but can be set higher if desired
-    if w4h.in_int_range(input_str, 0, 100):
+    if helpers.in_permitted_int_range(input_str, limits["min"], limits["max"]):
         result_str = input_str
         input_int = int(input_str)
         while input_int != 1:
