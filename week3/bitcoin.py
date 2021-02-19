@@ -1,5 +1,8 @@
 import requests
 
+# Method Signature:   convert_one_bitcoin_to_usd
+# Params:   
+# Description: Calculates the current value of 1 bitcoin is USD
 def convert_one_btc_to_usd():
     url = "https://api.coindesk.com/v1/bpi/currentprice.json"
     data = requests.get(url).json()

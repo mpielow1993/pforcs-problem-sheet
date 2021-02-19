@@ -1,5 +1,9 @@
 import helpers
 
+
+# Method Signature:   estimate_sqrt
+# Params:   step
+# Description: Estimates the square root of a positive integer by repeatedly incrementing a given step value
 def estimate_sqrt(step = 0.01):
     
     # set a realistic step value
