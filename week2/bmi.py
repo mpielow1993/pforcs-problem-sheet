@@ -15,9 +15,9 @@ def calculate_bmi():
         'max': 300
     }    
 
-    weight_in_kg = input('\nEnter weight in kilograms: ')
+    weight_in_kg = input(f'\nEnter weight in kilograms.\nMinimum is {weight_limits["min"]}. Maximum is {weight_limits["max"]}:   ')
     if help.in_permitted_float_range(weight_in_kg, weight_limits["min"], weight_limits["max"]):
-        height_in_cm = input('\nEnter height in centimetres: ')
+        height_in_cm = input(f'\nEnter height in centimetres.\nMinimum is {height_limits["min"]}. Maximum is {height_limits["max"]}:   ')
         if help.in_permitted_float_range(height_in_cm, height_limits["min"], height_limits["max"]):
             bmi = float(weight_in_kg) / math.pow((float(height_in_cm) / 100), 2)
             print(f'\nBMI is {str(round(bmi, 2))}')

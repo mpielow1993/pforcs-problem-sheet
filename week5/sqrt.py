@@ -7,7 +7,7 @@ import helper_methods as help
 def estimate_sqrt(step = 0.01):
     
     # set a realistic step value
-    # note in_permitted_float_range will return false for step <= 0 (so while loop below will definitely terminate)
+    # note in_permitted_float_range will return false for step <= minimum (so the while loop below will definitely terminate)
     help.in_permitted_float_range(step, 0, 1)
     
     limits = {
@@ -24,17 +24,17 @@ def estimate_sqrt(step = 0.01):
         initial_estimate = square_root * square_root
 
         while (True):
-            initial_error = helpers.positive_float_difference(initial_estimate, squared_number)
+            initial_error = help.positive_float_difference(initial_estimate, squared_number)
             square_root += step
             final_estimate = square_root * square_root
-            final_error = helpers.positive_float_difference(final_estimate, squared_number)
+            final_error = help.positive_float_difference(final_estimate, squared_number)
             if (final_error >= initial_error):
                 break
             initial_estimate = final_estimate
 
         print(f'The square root of {squared_number} is approximately {square_root}')
     
-    if not helpers.do_not_replay():
+    if not help.do_not_replay():
         estimate_sqrt(step)
 
         

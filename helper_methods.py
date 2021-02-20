@@ -1,6 +1,7 @@
 # Reference: https://stackoverflow.com/questions/736043/checking-if-a-string-can-be-converted-to-float-in-python 
 # Reference: https://book.pythontips.com/en/latest/ternary_operators.html
 # Reference: https://www.kite.com/python/answers/how-to-check-internet-connection-in-python
+# Reference: https://www.w3schools.com/python/ref_requests_response.asp
 import requests
 
 

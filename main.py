@@ -12,7 +12,7 @@ from week5 import sqrt
 #bmi.calculate_bmi()
 
 # Week 3
-bitcoin.get_current_bitcoin_price()
+#bitcoin.get_current_bitcoin_price()
 
 # Week 4
 #collatz.collatz()
