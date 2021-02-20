@@ -1,4 +1,4 @@
-import math, helpers
+import math, helper_methods as help
 # Method Signature:   calculate_bmi
 # Params:   
 # Description: Calculates a value for Body Mass Index based on user inputs for weight and height
@@ -16,11 +16,11 @@ def calculate_bmi():
     }    
 
     weight_in_kg = input('\nEnter weight in kilograms: ')
-    if helpers.in_permitted_float_range(weight_in_kg, weight_limits["min"], weight_limits["max"]):
+    if help.in_permitted_float_range(weight_in_kg, weight_limits["min"], weight_limits["max"]):
         height_in_cm = input('\nEnter height in centimetres: ')
-        if helpers.in_permitted_float_range(height_in_cm, height_limits["min"], height_limits["max"]):
+        if help.in_permitted_float_range(height_in_cm, height_limits["min"], height_limits["max"]):
             bmi = float(weight_in_kg) / math.pow((float(height_in_cm) / 100), 2)
             print(f'\nBMI is {str(round(bmi, 2))}')
 
-    if not helpers.do_not_replay():
+    if not help.do_not_replay():
         calculate_bmi()

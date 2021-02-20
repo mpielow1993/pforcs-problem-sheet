@@ -1,4 +1,4 @@
-import helpers
+import helper_methods as help
 
 
 # Method Signature:   estimate_sqrt
@@ -8,7 +8,7 @@ def estimate_sqrt(step = 0.01):
     
     # set a realistic step value
     # note in_permitted_float_range will return false for step <= 0 (so while loop below will definitely terminate)
-    helpers.in_permitted_float_range(step, 0, 1)
+    help.in_permitted_float_range(step, 0, 1)
     
     limits = {
         'min': 0.01,
@@ -17,7 +17,7 @@ def estimate_sqrt(step = 0.01):
     
     squared_number = input(f'Enter a positive number to estimate its positive square root. \n(Minimum is {limits["min"]}. Maximum is {limits["max"]}):   ')
 
-    if helpers.in_permitted_float_range(squared_number, limits['min'], limits['max']):
+    if help.in_permitted_float_range(squared_number, limits['min'], limits['max']):
 
         squared_number = float(squared_number)
         square_root = 0

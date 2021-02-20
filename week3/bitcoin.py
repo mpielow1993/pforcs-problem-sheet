@@ -1,4 +1,4 @@
-import requests, helpers
+import requests, helper_methods as help
 
 # Method Signature:   convert_one_bitcoin_to_usd
 # Params:   
@@ -16,10 +16,18 @@ def get_current_bitcoin_price():
 
     if input_currency in available_currencies.keys():
         url = "https://api.coindesk.com/v1/bpi/currentprice.json"
-        data = requests.get(url).json()
-        print('\n1 BTC = ' + available_currencies[input_currency] + "{:,.2f}".format(float(data["bpi"][input_currency]["rate_float"])))
+        
+        if help.internet_connection_present(url):
+
+            data = requests.get(url)
+
+            if help.http_request_successful(data.status_code):
+                data = data.json()
+                print('\n1 BTC = ' + available_currencies[input_currency] + "{:,.2f}".format(float(data["bpi"][input_currency]["rate_float"])))
+            else:
+                print(help.error_msg(f'HTTP request to "{url}" unsuccessful'))
     else:
-        print('\nERROR: Input is not equal to any one of the listed currencies')
+        print(help.error_msg('Input is not equal to any one of the listed currencies'))
     
-    if not helpers.do_not_replay():
+    if not help.do_not_replay():
         get_current_bitcoin_price() 
