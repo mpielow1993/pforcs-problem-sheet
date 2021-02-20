@@ -1,10 +1,13 @@
 import math, helpers
-
+# Method Signature:   calculate_bmi
+# Params:   
+# Description: Calculates a value for Body Mass Index based on user inputs for weight and height
 def calculate_bmi():
+    
     # Set realistic limits for height and weight
     weight_limits = {
         'min': 0,
-        'max': 500
+        'max': 200
     }
 
     height_limits = {
@@ -18,8 +21,6 @@ def calculate_bmi():
         if helpers.in_permitted_float_range(height_in_cm, height_limits["min"], height_limits["max"]):
             bmi = float(weight_in_kg) / math.pow((float(height_in_cm) / 100), 2)
             print(f'\nBMI is {str(round(bmi, 2))}')
-    choice = input('\nEnter any key to try again, or enter "exit" (case-sensitive) to quit:   ')
-    if choice == 'exit':
-        print('\nGoodbye')
-    else:
+
+    if not helpers.do_not_replay():
         calculate_bmi()

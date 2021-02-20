@@ -10,13 +10,13 @@ from week5 import sqrt
 # 
 
 # Week 2
-#bmi.calculate_bmi()
+bmi.calculate_bmi()
 
 # Week 3
-#bitcoin.convert_one_btc_to_usd()
+#bitcoin.get_current_bitcoin_price()
 
 # Week 4
 #collatz.collatz()
 
 # Week 5
-sqrt.estimate_sqrt()
+#sqrt.estimate_sqrt()

@@ -4,9 +4,9 @@ import helpers
 # Method Signature:   collatz
 # Params:   
 # Description:  Accepts a positive integer input by the user. Performs calculations in the following fashion, outputting the result 
-#               each time until a value of 1 is reached:
-#               If the value is even - divides by 2
-#               If the value is odd - multiplies by 3 and adds 1
+# each time until a value of 1 is reached:
+# If the value is even - divides by 2
+# If the value is odd - multiplies by 3 and adds 1
 
 def collatz():
 
@@ -29,8 +29,6 @@ def collatz():
             # Reference:   https://www.kite.com/python/answers/how-to-remove-leading-and-trailing-zeros-in-a-string-in-python
             result_str += str(f' {input_int}').strip('.0')
         print(result_str)
-    choice = input('\nEnter any key to try again, or enter "exit" (case-sensitive) to quit:   ')
-    if choice == 'exit':
-        print('\nGoodbye')
-    else:
-        collatz() 
+    
+    if not helpers.do_not_replay():
+        collatz()

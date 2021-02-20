@@ -101,3 +101,15 @@ def parse_bool(input):
         return True
     except ValueError:
         return False
+
+
+# Method Signature:   parse_bool
+# Params:   
+# Description:   Prompts the user to re-use the program to which it is appended 
+def do_not_replay():
+    choice = input('\nEnter any key to try again, or enter "exit" (case-insensitive) to quit:   ')
+    if choice.upper() == 'EXIT':
+        print('\nGoodbye')
+        return True
+    else:
+        return False
