@@ -10,10 +10,9 @@ def get_number_of_pattern_occurrences():
     
     if valid_file_param:
         pattern_to_match = input('Enter the pattern to match by:   ')
-        #pattern_to_match = f'/{pattern_to_match}/'
         with open(file_name, 'r') as reader:
             # The length of the split array will always be one greater than the pattern delimiter that it is split
-            print(len(re.split(pattern_to_match, reader.read())) - 1)
+            print(f'Number of occurrences of "{pattern_to_match}":   {len(re.split(pattern_to_match, reader.read())) - 1}')
     
     if not help.do_not_replay():
         get_number_of_pattern_occurrences()
