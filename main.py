@@ -2,6 +2,7 @@ from week2 import bmi
 from week3 import bitcoin
 from week4 import collatz
 from week5 import sqrt
+from week6 import es
 
 # Uncomment line-by-line to test all methods
 
@@ -19,3 +20,6 @@ from week5 import sqrt
 
 # Week 5
 #sqrt.estimate_sqrt()
+
+# Week 6
+es.get_number_of_pattern_occurrences()
