@@ -2,7 +2,8 @@
 # Reference: https://book.pythontips.com/en/latest/ternary_operators.html
 # Reference: https://www.kite.com/python/answers/how-to-check-internet-connection-in-python
 # Reference: https://www.w3schools.com/python/ref_requests_response.asp
-import requests
+import requests, os.path
+from os import path
 
 
 # Method Signature: in_permitted_float_range
@@ -156,3 +157,16 @@ def parse_int(input):
     except ValueError:
         return False
     
+
+# Method Signature:   file_exists
+# Params:   file_name
+# Description:   Returns true if a file exists with name equal to the supplied input, false otherwise
+def file_exists(file_name):
+    return path.isfile(file_name)
+
+# Method Signature:   is_valid_answer
+# Params:   user_input, valid_answers
+# Description:  Returns true if the user_input is equal to a value in 
+# valid answers, false otherwise
+def is_valid_answer(user_input, valid_answers):
+    return user_input in valid_answers
