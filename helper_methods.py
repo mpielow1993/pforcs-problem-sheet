@@ -2,7 +2,7 @@
 # Reference: https://book.pythontips.com/en/latest/ternary_operators.html
 # Reference: https://www.kite.com/python/answers/how-to-check-internet-connection-in-python
 # Reference: https://www.w3schools.com/python/ref_requests_response.asp
-import requests, os.path
+import requests, os.path, re
 from os import path
 
 
@@ -164,9 +164,41 @@ def parse_int(input):
 def file_exists(file_name):
     return path.isfile(file_name)
 
+
 # Method Signature:   is_valid_answer
 # Params:   user_input, valid_answers
 # Description:  Returns true if the user_input is equal to a value in 
 # valid answers, false otherwise
 def is_valid_answer(user_input, valid_answers):
     return user_input in valid_answers
+
+
+# Method Signature:   build_url_dict
+# Params:   url
+# Description:  Separates the values for the resource and parameters of a given url
+def build_url_dict(url):
+    if url is not None:
+        url_string = str(url)
+        url_dict = {}
+        param_dict = {}
+        # Separate the resource from the params, remove empty list elements
+        full_url_string_list = list(filter(len, re.split(r'http:\/\/|https:\/\/|\?', url_string)))
+        url_dict['resource'] = full_url_string_list[0]
+        if len(full_url_string_list) > 1:
+            param_list = list(map(lambda x: parse_string_to_dict_item(x, '='), full_url_string_list[1].split('&')))
+            for param in param_list:
+                param_dict.update(param)
+        url_dict['parameters'] = param_dict
+        return url_dict
+
+# Method Signature:   parse_string_to_dict_item
+# Params:   string, delimiter
+# Description:  Checks if the given string contains one and only one occurrence of the given delimiter. If so, 
+# splits the string by the given delimiter, then generates a key-value pair for the first and second parts, respectively.
+def parse_string_to_dict_item(string, delimiter):
+    string = str(string)
+    delimiter = str(delimiter)
+    if string.count(delimiter) == 1:
+        split_string = string.split(delimiter)
+        return {split_string[0]: split_string[1]}
+    return None
