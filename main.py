@@ -3,7 +3,8 @@ from week3 import bitcoin
 from week4 import collatz
 from week5 import sqrt
 from week6 import es
-from week7 import extract_url as extract
+from week7 import extract_url
+from week8 import plottask
 
 # Uncomment line-by-line to test all methods
 
@@ -26,4 +27,7 @@ from week7 import extract_url as extract
 #es.get_number_of_pattern_occurrences()
 
 # Week 7
-extract.extract_urls()
+#extract_url.extract_urls()
+
+# Week 8
+plottask.plot_functions()
