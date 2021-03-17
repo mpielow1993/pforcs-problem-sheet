@@ -5,6 +5,7 @@ from week5 import sqrt
 from week6 import es
 from week7 import extract_url
 from week8 import plottask
+from week9 import session
 
 # Uncomment line-by-line to test all methods
 
@@ -30,4 +31,9 @@ from week8 import plottask
 #extract_url.extract_urls()
 
 # Week 8
-plottask.plot_functions()
+#plottask.plot_functions()
+
+# Week 9
+session.get_download_data_qty_for_session()
+
+

@@ -66,10 +66,10 @@ def in_permitted_int_range(input, min, max):
 def positive_float_difference(float1, float2):
     if not parse_float(float1):
         print(error_msg('Argument 1 of "positive_float_difference()" cannot be parsed to a float'))
-        return None
+        return False
     if not parse_float(float2):
         print(error_msg('Argument 2 of "positive_float_difference()" cannot be parsed to a float'))
-        return None
+        return False
     return (float1 - float2, float2 - float1)[float1 <= float2]
 
 
@@ -177,19 +177,24 @@ def is_valid_answer(user_input, valid_answers):
 # Params:   url
 # Description:  Separates the values for the resource and parameters of a given url
 def build_url_dict(url):
-    if url is not None:
+    if url:
         url_string = str(url)
         url_dict = {}
         param_dict = {}
         # Separate the resource from the params, remove empty list elements
-        full_url_string_list = list(filter(len, re.split(r'http:\/\/|https:\/\/|\?', url_string)))
+        full_url_string_list = list(filter(len, re.split(r'http:\/\/|https:\/\/|\/|\?|\/\?', url_string)))
+        # Could potentially define further rules to decide what is a vali resource
         url_dict['resource'] = full_url_string_list[0]
         if len(full_url_string_list) > 1:
             param_list = list(map(lambda x: parse_string_to_dict_item(x, '='), full_url_string_list[1].split('&')))
-            for param in param_list:
-                param_dict.update(param)
+            print(param_list)
+            if len(param_list) > 1:
+                for param in param_list:
+                    param_dict.update(param)
         url_dict['parameters'] = param_dict
         return url_dict
+    else:
+        return False
 
 
 # Method Signature:   parse_string_to_dict_item
@@ -199,7 +204,8 @@ def build_url_dict(url):
 def parse_string_to_dict_item(string, delimiter):
     string = str(string)
     delimiter = str(delimiter)
+    dict_item = {}
     if string.count(delimiter) == 1:
         split_string = string.split(delimiter)
-        return {split_string[0]: split_string[1]}
-    return None
+        dict_item = {split_string[0]: split_string[1]}
+    return dict_item
