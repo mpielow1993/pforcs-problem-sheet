@@ -11,6 +11,8 @@ def extract_urls():
     if valid_file_param:
         with open(log_file_name, 'r') as reader:
             file_string = reader.read()
+            # Apply appropriate delimiter to separate the url from the rest of the standard format string within each line of the sample log file
+            # Reference: https://httpd.apache.org/docs/1.3/logs.html
             file_array = file_string.replace(' ', '').split('"')
             extracted_urls = list(filter(lambda x: re.match(r'(http|https)://', x), file_array))
             processd_urls = list(map(lambda x: help.build_url_dict(x), extracted_urls))
