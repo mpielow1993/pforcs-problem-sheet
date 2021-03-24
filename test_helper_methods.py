@@ -155,15 +155,15 @@ def test_build_url_dict():
 
     assert help.build_url_dict(url_2) == url_2_dict, 'Test build_url_dict() for url with no params'
 
-    url_3 = 'https://www.youtube.com/?param1=PARAM_1&param2=PARAM_2&param3=PARAM_3'
+    url_3 = "http://www.buttercupgames.com/category.screen?categoryId=SHOOTER"
     url_3_dict = {
-        'resource': 'www.youtube.com',
+        'resource': 'www.buttercupgames.com/category.screen',
         'parameters': {
-            'param1': 'PARAM_1',
-            'param2': 'PARAM_2',
-            'param3': 'PARAM_3',
+            'categoryId': 'SHOOTER'
         }
     }
+
+    print(help.build_url_dict(url_3))
 
     assert help.build_url_dict(url_3) == url_3_dict, 'Test build_url_dict() for url with params'
 
@@ -183,6 +183,31 @@ def test_build_url_dict():
         }
     }
 
+    assert help.build_url_dict(url_5) == url_5_dict, 'Test build_url_dict() for url with query param containing more than one equals'
+
+
+
+def test_build_http_request_dict():
+
+    http_request_1 = ''
+    assert help.build_http_request_dict(http_request_1) is False, 'Empty http request should return False'
+
+    http_request_2 = '199.15.234.66 - - [15/Feb/2021:18:24:31] "GET /cart.do?action=view&itemId=EST-6&productId=SC-MG-G10&JSESSIONID=SD5SL9FF2ADFF4958 HTTP 1.1" 200 3033 "http://www.google.com" "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.28) Gecko/20120306 YFF3 Firefox/3.6.28 ( .NET CLR 3.5.30729; .NET4.0C)" 177'
+    http_request_2_dict = {
+        'resource': '/cart.do',
+        'parameters': {
+            'action': 'view',
+            'itemId': 'EST-6',
+            'productId': 'SC-MG-G10',
+            'JSESSIONID': 'SD5SL9FF2ADFF4958'
+        },
+        'noOfBytesDownloaded': '177'
+    }
+
+    print(help.build_http_request_dict(http_request_2))
+
+    assert help.build_http_request_dict(http_request_2) == http_request_2_dict, 'Test build_http_request_dict() for url with params'
+
 
 if __name__ == "__main__":
     test_in_permitted_float_range()
@@ -196,4 +221,5 @@ if __name__ == "__main__":
     test_is_valid_answer()
     test_build_url_dict()
     test_parse_string_to_dict_item()
+    test_build_http_request_dict()
     print("ALL TESTS PASSED")

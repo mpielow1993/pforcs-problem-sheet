@@ -182,17 +182,46 @@ def build_url_dict(url):
         url_dict = {}
         param_dict = {}
         # Separate the resource from the params, remove empty list elements
-        full_url_string_list = list(filter(len, re.split(r'http:\/\/|https:\/\/|\/|\?|\/\?', url_string)))
+        full_url_string_list = list(filter(len, re.split(r'http:\/\/|https:\/\/|\?|\/\?', url_string)))
         # Could potentially define further rules to decide what is a vali resource
-        url_dict['resource'] = full_url_string_list[0]
+        # Strip the last character from the resource string if it is a forward slash
+        url_dict['resource'] = (full_url_string_list[0], full_url_string_list[0][:-1])[full_url_string_list[0][-1] == '/']
         if len(full_url_string_list) > 1:
             param_list = list(map(lambda x: parse_string_to_dict_item(x, '='), full_url_string_list[1].split('&')))
-            print(param_list)
-            if len(param_list) > 1:
+            if len(param_list) >= 1:
                 for param in param_list:
                     param_dict.update(param)
         url_dict['parameters'] = param_dict
         return url_dict
+    else:
+        return False
+
+
+# Method Signature:   build_http_request_dict
+# Params:   url
+# Description:  Separates the values for the resource and parameters of a given http request
+def build_http_request_dict(log_entry):
+    if log_entry:
+        log_entry = str(log_entry)
+        log_entry_list = log_entry.rsplit(' ', 1)
+        log_entry_dict = {}
+        log_entry_dict['noOfBytesDownloaded'] = log_entry_list[-1].replace('\n', '')
+        log_entry_list = log_entry_list[0].replace(' ', '').split('"')
+        param_dict = {}
+        # Separate the resource from the params, remove empty list elements
+        log_entry_list = list(filter(lambda x: re.match(r'GET|POST|PUT|PATCH', x), log_entry_list))[0]
+        log_entry_list = list(filter(len, re.split(r'GET|POST|PUT|PATCH|\?|\/\?|HTTP1.1', log_entry_list)))
+        # Could potentially define further rules to decide what is a vali resource
+        # Strip the last character from the resource string if it is a forward slash
+        log_entry_dict['resource'] = (log_entry_list[0], log_entry_list[0][:-1])[log_entry_list[0][-1] == '/']
+        if len(log_entry_list) > 1:
+            param_list = list(map(lambda x: parse_string_to_dict_item(x, '='), log_entry_list[1].split('&')))
+            if len(param_list) >= 1:
+                for param in param_list:
+                    param_dict.update(param)
+        log_entry_dict['parameters'] = param_dict
+        print(log_entry_dict)
+        return log_entry_dict
     else:
         return False
 
