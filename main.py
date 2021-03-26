@@ -29,11 +29,12 @@ from week9 import session
 
 # Week 7
 #extract_url.extract_urls()
+#extract_url.extract_http_requests()
 
 # Week 8
 #plottask.plot_functions()
 
 # Week 9
-session.get_download_data_qty_for_session()
+session.build_session_dataframe()
 
 
