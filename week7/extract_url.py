@@ -32,9 +32,11 @@ def extract_http_requests():
     
     if valid_file_param:
         with open(log_file_name, 'r') as reader:
+            http_request_list = []
             for log_entry in reader.readlines():
-                help.build_http_request_dict(log_entry)
+                http_request_list.append(help.build_log_entry_dict(log_entry, help.HTTP_REQUEST))
             # Apply appropriate delimiter to separate the url from the rest of the standard format string within each line of the sample log file
             # Reference: https://httpd.apache.org/docs/1.3/logs.html
+        return http_request_list
     if not help.do_not_replay():
         extract_urls()

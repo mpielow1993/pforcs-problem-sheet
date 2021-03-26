@@ -143,9 +143,11 @@ def test_parse_string_to_dict_item():
 
 
 def test_build_url_dict():
+
+    URL = 1
     
     url_1 = ''
-    assert help.build_url_dict(url_1) is False, 'Empty url should return False'
+    assert help.build_log_entry_dict(url_1, URL) is False, 'Empty url should return False'
 
     url_2 = 'https://www.youtube.com/'
     url_2_dict = {
@@ -153,7 +155,7 @@ def test_build_url_dict():
         'parameters': {}
     }
 
-    assert help.build_url_dict(url_2) == url_2_dict, 'Test build_url_dict() for url with no params'
+    assert help.build_log_entry_dict(url_2, URL) == url_2_dict, 'Test build_url_dict() for url with no params'
 
     url_3 = "http://www.buttercupgames.com/category.screen?categoryId=SHOOTER"
     url_3_dict = {
@@ -165,7 +167,7 @@ def test_build_url_dict():
 
     print(help.build_url_dict(url_3))
 
-    assert help.build_url_dict(url_3) == url_3_dict, 'Test build_url_dict() for url with params'
+    assert help.build_log_entry_dict(url_3, URL) == url_3_dict, 'Test build_url_dict() for url with params'
 
     url_4 = 'https://www.youtube.com/?DSDOFNSFDKL9ERW9'
     url_4_dict = {
@@ -173,7 +175,7 @@ def test_build_url_dict():
         'parameters': {}
     }
 
-    assert help.build_url_dict(url_4) == url_4_dict, 'Test build_url_dict() for url with improperly formatted query string'
+    assert help.build_log_entry_dict(url_4, URL) == url_4_dict, 'Test build_url_dict() for url with improperly formatted query string'
 
     url_5 = 'https://www.youtube.com/?param1=PAR=1&param2=PARAM_2'
     url_5_dict = {
@@ -183,14 +185,16 @@ def test_build_url_dict():
         }
     }
 
-    assert help.build_url_dict(url_5) == url_5_dict, 'Test build_url_dict() for url with query param containing more than one equals'
+    assert help.build_log_entry_dict(url_5, URL) == url_5_dict, 'Test build_url_dict() for url with query param containing more than one equals'
 
 
 
 def test_build_http_request_dict():
 
+    HTTP_REQUEST = 0
+
     http_request_1 = ''
-    assert help.build_http_request_dict(http_request_1) is False, 'Empty http request should return False'
+    assert help.build_log_entry_dict(http_request_1, HTTP_REQUEST) is False, 'Empty http request should return False'
 
     http_request_2 = '199.15.234.66 - - [15/Feb/2021:18:24:31] "GET /cart.do?action=view&itemId=EST-6&productId=SC-MG-G10&JSESSIONID=SD5SL9FF2ADFF4958 HTTP 1.1" 200 3033 "http://www.google.com" "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.28) Gecko/20120306 YFF3 Firefox/3.6.28 ( .NET CLR 3.5.30729; .NET4.0C)" 177'
     http_request_2_dict = {
@@ -200,14 +204,24 @@ def test_build_http_request_dict():
             'itemId': 'EST-6',
             'productId': 'SC-MG-G10',
             'JSESSIONID': 'SD5SL9FF2ADFF4958'
-        },
-        'noOfBytesDownloaded': '177'
+        }
     }
 
-    print(help.build_http_request_dict(http_request_2))
+    assert help.build_log_entry_dict(http_request_2, HTTP_REQUEST) == http_request_2_dict, 'Test build_http_request_dict() for url with params'
 
-    assert help.build_http_request_dict(http_request_2) == http_request_2_dict, 'Test build_http_request_dict() for url with params'
 
+def test_get_no_of_bytes_downloaded():
+
+    http_request_1 = '199.15.234.66 - - [15/Feb/2021:18:24:31] "GET /cart.do?action=view&itemId=EST-6&productId=SC-MG-G10&JSESSIONID=SD5SL9FF2ADFF4958 HTTP 1.1" 200 3033 "http://www.google.com" "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.28) Gecko/20120306 YFF3 Firefox/3.6.28 ( .NET CLR 3.5.30729; .NET4.0C)" 177'
+
+    assert help.get_no_of_bytes_downloaded(http_request_1) == 177, 'Test no of downloaded bytes correctly extracted'
+
+
+def test_get_log_datetime():
+
+    http_request_1 = '199.15.234.66 - - [15/Feb/2021:18:24:31] "GET /cart.do?action=view&itemId=EST-6&productId=SC-MG-G10&JSESSIONID=SD5SL9FF2ADFF4958 HTTP 1.1" 200 3033 "http://www.google.com" "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.28) Gecko/20120306 YFF3 Firefox/3.6.28 ( .NET CLR 3.5.30729; .NET4.0C)" 177'
+
+    assert help.get_log_datetime(http_request_1) == '15/Feb/2021:18:24:31', 'Test log datetime correctly extracted'
 
 if __name__ == "__main__":
     test_in_permitted_float_range()
@@ -222,4 +236,6 @@ if __name__ == "__main__":
     test_build_url_dict()
     test_parse_string_to_dict_item()
     test_build_http_request_dict()
+    test_get_no_of_bytes_downloaded()
+    test_get_log_datetime()
     print("ALL TESTS PASSED")
