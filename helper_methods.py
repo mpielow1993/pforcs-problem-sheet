@@ -7,79 +7,77 @@ from os import path
 from datetime import datetime
 
 # Constants
-HTTP_REQUEST = 0
-URL = 1
+LOG_ENTRY_HTTP_REQUEST = 0
+LOG_ENTRY_URL = 1
+LOG_ENTRY_NO_OF_BYTES_DOWNLOADED = 2
+LOG_ENTRY_DATETIME = 3
 
-# Method Signature: in_permitted_float_range
-# Params: input, min, max
-# Description: Checks that input, min and max are of type float. Returns true if input is in-between min & max, false otherwise
-def in_permitted_float_range(input, min, max):
+LOG_ENTRY_HTTP_REQUEST_REGEX = 'GET|POST|PUT|PATCH|HTTP1.1'
+LOG_ENTRY_URL_REGEX = 'http:\\/\\/|https:\\/\\/'
+LOG_ENTRY_DATETIME_REGEX = '\\[|\\]'
 
-    param_dict = {
-        'Input': input,
-        'Minimum': min,
-        'Maximum': max
-    }
 
-    for key, value in param_dict.items():
-        if not parse_float(value):
-            print(error_msg(f'{key} cannot be converted to a decimal'))
+# Method: try_parse()   
+# Description:  
+#   Returns true if a given input can be parse to a given data type, false otherwise
+def try_parse(input, data_type, datetime_format = '%d/%b/%Y:%H:%M:%S'):    
+    try:
+        if data_type is None:
             return False
-        
-    if float(input) <= min:
-        print(error_msg(f'Input cannot be less than or equal to {min}'))
+        if data_type in (bool, float, int, str):
+            data_type(input)
+            return True
+        elif data_type is datetime:
+            datetime.strptime(input, datetime_format)
+            return True
+    except(ValueError):
         return False
 
-    if float(input) > max:
-        print(error_msg(f'Input cannot be greater than {max}'))
-        return False
 
-    return True
-
-
-# Method Signature:   in_permitted_int_range
-# Params:   input, min, max
-# Description:   The int equivalent to method 'in_float_range' (see above)
-def in_permitted_int_range(input, min, max):
-
-    param_dict = {
-        'Input': input,
-        'Minimum': min,
-        'Maximum': max
-    }
-
-    for key, value in param_dict.items():
-        if not parse_int(value):
-            print(error_msg(f'{key} cannot be converted to an integer'))
+# Method: in_permitted_range()
+# Description: 
+#   Checks that a given input, minimum and maximum are all a given data type.
+#   Returns true if input is in-between min & max, false otherwise
+def in_permitted_range(input, min, max, data_type):
+    valid_data_types = (bool, float, int, str)
+    if data_type in valid_data_types:
+        param_dict = {
+            'Input': input,
+            'Minimum': min,
+            'Maximum': max
+        }
+        for key, value in param_dict.items():
+            if not try_parse(value, data_type):
+                print(error_msg(f'{key} cannot be converted to a decimal'))
+                return False
+        if data_type(input) <= min:
+            print(error_msg(f'Input cannot be less than or equal to {min}'))
             return False
-        
-    if int(input) <= min:
-        print(error_msg(f'Input cannot be less than or equal to {min}'))
+        if data_type(input) > max:
+            print(error_msg(f'Input cannot be greater than {max}'))
+            return False
+        return True
+    else:
         return False
 
-    if int(input) > max:
-        print(error_msg(f'Input cannot be greater than {max}'))
+
+# Method:  positive_difference()
+# Description:   
+#   Finds the greatest of two numbers of a given data type. 
+#   Subtracts the smallest from the greatest to return the positive difference between the two.
+def positive_difference(argument1, argument2, data_type):
+    if not try_parse(argument1, data_type):
+        print(error_msg(f'Argument 1 of "positive_difference()" cannot be parsed to {data_type}'))
         return False
-
-    return True
-
-
-# Method Signature:  positive_float_difference
-# Params:   float1, float2
-# Description:   Finds the greatest of two floating point numbers and subtracts smallest from the greatest to return the positive difference between the two
-def positive_float_difference(float1, float2):
-    if not parse_float(float1):
-        print(error_msg('Argument 1 of "positive_float_difference()" cannot be parsed to a float'))
+    if not try_parse(argument2, data_type):
+        print(error_msg(f'Argument 2 of "positive_difference()" cannot be parsed to {data_type}'))
         return False
-    if not parse_float(float2):
-        print(error_msg('Argument 2 of "positive_float_difference()" cannot be parsed to a float'))
-        return False
-    return (float1 - float2, float2 - float1)[float1 <= float2]
+    return (argument1 - argument2, argument2 - argument1)[argument1 <= argument2]
 
 
-# Method Signature:   do_not_replay
-# Params:   
-# Description:   Prompts the user to re-use the program to which it is appended 
+# Method:   do_not_replay()
+# Description:   
+#   Prompts the user to re-use the program to which it is appended 
 def do_not_replay():
     choice = input('\nEnter any key to try again, or enter "exit" (case-insensitive) to quit:   ')
     if choice.upper() == 'EXIT':
@@ -89,16 +87,18 @@ def do_not_replay():
         return False
 
 
-# Method Signature:   http_status
-# Params:   
-# Description:   Checks the reponse code for a given http request. Returns true if request successful, false otherwise. Prints appropriate message.
+# Method:   http_request_successful()  
+# Description:   
+#   Checks the reponse code for a given http request. 
+#   Returns true if request successful, false otherwise. 
+#   Prints appropriate message.
 def http_request_successful(response_code):
     return response_code == 200
 
 
-# Method Signature:   internet_connection_present
-# Params:   
-# Description:   Returns true if the user is connected to the internet, false otherwise
+# Method:   internet_connection_present)()  
+# Description:   
+#   Returns true if the user is connected to the internet, false otherwise
 def internet_connection_present(url):
     timeout = 5
     try:
@@ -109,177 +109,123 @@ def internet_connection_present(url):
         return False
 
 
-# Method Signature:   error_msg
-# Params:   output
-# Description:   Prepends an error prefix onto a string to mark said string as an error message
+# Method:   error_msg()
+# Description:   
+#   Prepends an error prefix onto a string to mark said string as an error message
 def error_msg(output):
-    if parse_str(output):
+    if try_parse(output, str):
         return '\nERROR: ' + output
     return '\nERROR: parameter "output" in of method "errorMsg() cannot be parsed to a string"'
 
 
-# Method Signature:   parse_float
-# Params:   input
-# Description:   Returns true if input can be parsed to a float, false otherwise
-def parse_float(input):
-    try:
-        float(input)
-        return True
-    except ValueError:
-        return False
-
-
-# Method Signature:   parse_bool
-# Params:   input
-# Description:   The boolean equivalent to method 'parse_float' (see above)
-def parse_bool(input):
-    try:
-        bool(input)
-        return True
-    except ValueError:
-        return False
-
-
-# Method Signature:   parse_str
-# Params:   input
-# Description:   The string equivalent to method 'parse_float' (see above)
-def parse_str(input):
-    try:
-        str(input)
-        return True
-    except ValueError:
-        return False
-
-
-# Method Signature:   parse_int
-# Params:   input
-# Description:   The int equivalent to method 'parse_float' (see above)
-def parse_int(input):
-    try:
-        int(input)
-        return True
-    except ValueError:
-        return False
-    
-
-# Method Signature:   file_exists
-# Params:   file_name
-# Description:   Returns true if a file exists with name equal to the supplied input, false otherwise
+# Method:   file_exists()
+# Description:   
+#   Returns true if a file exists with name equal to the supplied input, false otherwise
 def file_exists(file_name):
     return path.isfile(file_name)
 
 
-# Method Signature:   is_valid_answer
-# Params:   user_input, valid_answers
-# Description:  Returns true if the user_input is equal to a value in 
-# valid answers, false otherwise
+# Method:   is_valid_answer()
+# Description:  
+#   Returns true if the user_input is equal to a value in valid answers, false otherwise
 def is_valid_answer(user_input, valid_answers):
     return user_input in valid_answers
 
 
-# Method Signature:   build_url_dict
-# Params:   url
-# Description:  Separates the values for the resource and parameters of a given url
-def build_url_dict(url):
-    if url:
-        url_string = str(url)
-        url_dict = {}
-        param_dict = {}
-        # Separate the resource from the params, remove empty list elements
-        full_url_string_list = list(filter(len, re.split(r'http:\/\/|https:\/\/|\?|\/\?', url_string)))
-        # Could potentially define further rules to decide what is a vali resource
-        # Strip the last character from the resource string if it is a forward slash
-        url_dict['resource'] = (full_url_string_list[0], full_url_string_list[0][:-1])[full_url_string_list[0][-1] == '/']
-        if len(full_url_string_list) > 1:
-            param_list = list(map(lambda x: parse_string_to_dict_item(x, '='), full_url_string_list[1].split('&')))
-            if len(param_list) >= 1:
-                for param in param_list:
-                    param_dict.update(param)
-        url_dict['parameters'] = param_dict
-        return url_dict
-    else:
-        return False
+# Method:   build_http_request_dict()
+# Description:  
+#   Separates the values for the resource and parameters of a given HTTP request
+def build_log_entry_section_dict(log_entry, log_entry_section):
+    valid_log_entry_sections = (LOG_ENTRY_HTTP_REQUEST, LOG_ENTRY_URL)
+    if not log_entry_section in valid_log_entry_sections:
+        return None
+    log_entry = get_log_entry_section(log_entry, log_entry_section)
+    log_entry_dict = {}
+    param_dict = {}
+    log_entry = re.split(r'\?|\/\?', log_entry)
+    log_entry_dict['resource'] = (log_entry[0], log_entry[0][:-1])[log_entry[0][-1] == '/']
+    if len(log_entry) > 1:
+        param_list = list(map(lambda x: parse_to_dict_item(x, '='), log_entry[1].split('&')))
+        if len(param_list) >= 1:
+            for param in param_list:
+                param_dict.update(param)
+    log_entry_dict['parameters'] = param_dict
+    return log_entry_dict
 
 
-# Method Signature:   build_http_request_dict
-# Params:   url
-# Description:  Separates the values for the resource and parameters of a given http request
-def build_log_entry_dict(log_entry, section_code):
-    if log_entry:
-        log_entry = str(log_entry)
-        log_entry_dict = {}
-        log_entry = log_entry.replace(' ', '')
-        param_dict = {}
-
-        if section_code == 0:
-            regex_string = r'GET|POST|PUT|PATCH|HTTP1.1'
-        elif section_code == 1:
-            regex_string = r'http:\/\/|https:\/\/'
+# Method: get_log_entry_section()     
+# Description: 
+#   Gets the string value for given section for a given line of a server log entry
+def get_log_entry_section(log_entry, log_entry_section):
+    if try_parse(log_entry, str):
+        log_entry_list = str(log_entry).replace(' ', '').split('"')
+        valid_log_entry_sections = (LOG_ENTRY_URL, LOG_ENTRY_HTTP_REQUEST, LOG_ENTRY_DATETIME, LOG_ENTRY_NO_OF_BYTES_DOWNLOADED)
+        if log_entry_section in valid_log_entry_sections:
+            if log_entry_section is LOG_ENTRY_URL:
+                log_entry_list = list(filter(lambda x: re.search(f'{LOG_ENTRY_URL_REGEX}', x), log_entry_list))       
+                if len(log_entry_list) > 0:
+                    return log_entry_list[0]
+                else:
+                    return None
+            elif log_entry_section is LOG_ENTRY_HTTP_REQUEST:
+                log_entry_list = list(filter(lambda x: re.search(f'{LOG_ENTRY_HTTP_REQUEST_REGEX}', x), log_entry_list))
+                if len(log_entry_list) > 0:
+                    log_entry_list = log_entry_list[0]
+                    log_entry_list = re.split(f'{LOG_ENTRY_HTTP_REQUEST_REGEX}', log_entry_list)        
+                    return log_entry_list[1]
+                else:
+                    return None       
+            elif log_entry_section is LOG_ENTRY_DATETIME:
+                log_entry_list = list(filter(lambda x: re.search(f'{LOG_ENTRY_DATETIME_REGEX}', x), log_entry_list))
+                if len(log_entry_list) > 0:
+                    log_entry_list = log_entry_list[0]
+                    log_entry_list = re.split(f'{LOG_ENTRY_DATETIME_REGEX}', log_entry_list)     
+                    return log_entry_list[1]
+                else:
+                    return None   
+            elif log_entry_section is LOG_ENTRY_NO_OF_BYTES_DOWNLOADED:
+                if try_parse(log_entry_list[-1], float):
+                    return log_entry_list[-1]
+                else:
+                    return None
+            else:
+                return None
         else:
-            return False
-
-        # Separate the resource from the params, remove empty list elements
-        log_entry = re.split(f'{regex_string}', log_entry)[1]
-        #print(log_entry)
-        # Could potentially define further rules to decide what is a vali resource
-        # Strip the last character from the resource string if it is a forward slash
-        log_entry = re.split(r'\?|\/\?', log_entry)
-
-        log_entry_dict['resource'] = (log_entry[0], log_entry[0][:-1])[log_entry[0][-1] == '/']
-        if len(log_entry) > 1:
-            param_list = list(map(lambda x: parse_string_to_dict_item(x, '='), log_entry[1].split('&')))
-            if len(param_list) >= 1:
-                for param in param_list:
-                    param_dict.update(param)
-        log_entry_dict['parameters'] = param_dict
-        #print(log_entry_dict)
-        return log_entry_dict
+            return None
     else:
-        return False
+        return None
 
 
-# Method Signature:   
-# Params:   
+# Method:   Build dataframe_row()   
 # Description:  
-def get_no_of_bytes_downloaded(log_entry):
-    if log_entry:
-        log_entry = str(log_entry)
-        log_entry = log_entry.rsplit(' ', 1)[1]
-        #print(log_entry)
-        if parse_float(log_entry):
-            return float(log_entry) 
-    else:
-        return False
-
-
-# Method Signature:   
-# Params:   
-# Description:  
-def get_log_datetime(log_entry):
-    if log_entry:
-        log_entry = str(log_entry)
-        return re.split(r'\[|\]', log_entry)[1]
-    else:
-        return False
-
-
-# Method Signature:   
-# Params:   
-# Description:  
+#   Builds a given row of the pandas dataframe needed for the plot from week9
 def build_dataframe_row(log_entry):    
-    log_entry = str(log_entry)
-    processed_log_entry = {}
-    processed_log_entry['timeOccurred'] = datetime.strptime(get_log_datetime(log_entry), '%d/%b/%Y:%H:%M:%S')
-    processed_log_entry['sessionId'] = build_log_entry_dict(log_entry, HTTP_REQUEST)['parameters']['JSESSIONID']
-    processed_log_entry['noOfBytesDownloaded'] = get_no_of_bytes_downloaded(log_entry)
-    return processed_log_entry
+    if log_entry and try_parse(log_entry, str):
+        log_entry = str(log_entry)
+        processed_log_entry = {}
+        log_entry_section = get_log_entry_section(log_entry, LOG_ENTRY_DATETIME)
+        if log_entry_section is not None:
+            if try_parse(log_entry_section, datetime, '%d/%b/%Y:%H:%M:%S'):
+                processed_log_entry['timeOccurred'] = datetime.strptime(log_entry_section, '%d/%b/%Y:%H:%M:%S')
+        log_entry_section = get_log_entry_section(log_entry, LOG_ENTRY_HTTP_REQUEST)
+        if log_entry_section is not None:
+            http_request_param_dict = build_log_entry_section_dict(log_entry, LOG_ENTRY_HTTP_REQUEST)['parameters']
+            if 'JSESSIONID' in http_request_param_dict:
+                processed_log_entry['sessionId'] = http_request_param_dict['JSESSIONID']
+        log_entry_section = get_log_entry_section(log_entry, LOG_ENTRY_NO_OF_BYTES_DOWNLOADED)
+        if log_entry_section is not None:
+            if try_parse(log_entry_section, float):
+                processed_log_entry['noOfBytesDownloaded'] = float(log_entry_section)
+        return processed_log_entry
+    else:
+        return None
 
 
-# Method Signature:   parse_string_to_dict_item
-# Params:   string, delimiter
-# Description:  Checks if the given string contains one and only one occurrence of the given delimiter. If so, 
-# splits the string by the given delimiter, then generates a key-value pair for the first and second parts, respectively.
-def parse_string_to_dict_item(string, delimiter):
+# Method Signature:   parse_string_to_dict_item()
+# Description:  
+#   Checks if the given string contains one and only one occurrence of the given delimiter. 
+#   If so, splits the string by the given delimiter, then generates a key-value pair for the first and second parts, respectively.
+def parse_to_dict_item(string, delimiter):
     string = str(string)
     delimiter = str(delimiter)
     dict_item = {}
