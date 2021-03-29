@@ -2,6 +2,8 @@
 # Reference: https://book.pythontips.com/en/latest/ternary_operators.html
 # Reference: https://www.kite.com/python/answers/how-to-check-internet-connection-in-python
 # Reference: https://www.w3schools.com/python/ref_requests_response.asp
+# Reference
+
 import requests, os.path, re
 from os import path
 from datetime import datetime
@@ -11,7 +13,6 @@ LOG_ENTRY_HTTP_REQUEST = 0
 LOG_ENTRY_URL = 1
 LOG_ENTRY_NO_OF_BYTES_DOWNLOADED = 2
 LOG_ENTRY_DATETIME = 3
-
 LOG_ENTRY_HTTP_REQUEST_REGEX = 'GET|POST|PUT|PATCH|HTTP1.1'
 LOG_ENTRY_URL_REGEX = 'http:\\/\\/|https:\\/\\/'
 LOG_ENTRY_DATETIME_REGEX = '\\[|\\]'
@@ -122,7 +123,11 @@ def error_msg(output):
 # Description:   
 #   Returns true if a file exists with name equal to the supplied input, false otherwise
 def file_exists(file_name):
-    return path.isfile(file_name)
+    if not path.isfile(file_name):
+        print(error_msg(f'File "{file_name}" does not exist.'))
+        return False
+    else:
+        return True
 
 
 # Method:   is_valid_answer()
@@ -130,6 +135,20 @@ def file_exists(file_name):
 #   Returns true if the user_input is equal to a value in valid answers, false otherwise
 def is_valid_answer(user_input, valid_answers):
     return user_input in valid_answers
+
+
+# Method:   is_valid_file()
+# Description:  
+#   Returns true if the extension of a given file is in a list of permitted file extensions, false otherwise
+def is_valid_file(file_name, valid_file_extensions):
+    if len(valid_file_extensions) >= 1:
+        for valid_file_extension in valid_file_extensions:
+            if re.match(f'^.*(\\.{valid_file_extension})$', file_name):
+                return True
+        print(error_msg(f'File extension must be one of the following:\n({", ".join(valid_file_extensions)})'))
+        return False
+    else:
+        return False
 
 
 # Method:   build_http_request_dict()

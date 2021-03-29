@@ -137,6 +137,28 @@ def test_file_exists():
         assert help.file_exists(non_existing_file) is False, f'Non-existing file "{non_existing_file}" should return False'
 
 
+# Test for method:   is_valid_file()
+def test_is_valid_file():
+    valid_file_extensions = [
+        'txt',
+        'log'
+    ]
+    valid_files = [
+        'week7/access.log',
+        'dfjskj.sdfisd.txt',
+        'a_test_file_123.log'
+    ]
+    invalid_files = [
+        'week7/access.jpg',
+        'log.jpg',
+        'txt.txt.py'
+    ]
+    for valid_file in valid_files:
+        assert help.is_valid_file(valid_file, valid_file_extensions) is True, f'File with valid extension "{valid_file}" should return True'
+    for invalid_file in invalid_files:
+        assert help.is_valid_file(invalid_file, valid_file_extensions) is False, f'File with invalid extension "{invalid_file}" should return False'
+
+
 # Test for method:   is_valid_answer()
 def test_is_valid_answer():
     all_valid_answers = [
@@ -253,6 +275,7 @@ if __name__ == "__main__":
     test_http_request_successful()
     test_error_msg()
     test_file_exists()
+    test_is_valid_file()
     test_is_valid_answer()
     test_build_log_entry_section_dict()
     test_parse_to_dict_item()
