@@ -10,13 +10,14 @@ import matplotlib.pyplot as plt
 #   Builds a pandas dataframe containing the above attributes as columns, with Datetime as its index.
 #   Outputs a plot showing the total amount of downloaded data in bytes for each Session ID in the entire log file.
 def plot_total_downloaded_data_per_session():
-    valid_file_param = True
     log_file_name = input('Enter the name of the file:   ')
+    valid_file_extensions = ['log']
     if not help.file_exists(log_file_name):
         valid_file_param = False
-    valid_file_extensions = ['log']
-    if not help.is_valid_file(log_file_name, valid_file_extensions):
+    elif not help.is_valid_file(log_file_name, valid_file_extensions):
         valid_file_param = False
+    else:
+        valid_file_param = True
     if valid_file_param:
         with open(log_file_name, 'r') as reader:
             log_entries = []

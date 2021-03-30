@@ -3,13 +3,14 @@ import re, helper_methods as help
 # Method:   get_number_of_pattern_occurrences
 # Description:  Outputs the number of occurrences of a character sequence decided by the user
 def get_number_of_pattern_occurrences():
-    valid_file_param = True
     file_name = input('Enter the name of the file:   ')
+    valid_file_extensions = ['txt']
     if not help.file_exists(file_name):
         valid_file_param = False
-    valid_file_extensions = ['txt']
-    if not help.is_valid_file(file_name, valid_file_extensions):
+    elif not help.is_valid_file(file_name, valid_file_extensions):
         valid_file_param = False
+    else:
+        valid_file_param = True
     if valid_file_param:
         pattern_to_match = input('Enter the pattern to match by:   ')
         with open(file_name, 'r') as reader:

@@ -34,7 +34,7 @@ sample_param_dict_list = [
 # 
 
 # Week 2
-#bmi.calculate_bmi()
+# #bmi.calculate_bmi()
 
 # Week 3
 #bitcoin.get_current_bitcoin_price()

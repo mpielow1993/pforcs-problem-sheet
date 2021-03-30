@@ -142,9 +142,8 @@ def is_valid_answer(user_input, valid_answers):
 #   Returns true if the extension of a given file is in a list of permitted file extensions, false otherwise
 def is_valid_file(file_name, valid_file_extensions):
     if len(valid_file_extensions) >= 1:
-        for valid_file_extension in valid_file_extensions:
-            if re.match(f'^.*(\\.{valid_file_extension})$', file_name):
-                return True
+        if re.match(f'^.*(\\.{"|".join(valid_file_extensions)})$', file_name):
+            return True
         print(error_msg(f'File extension must be one of the following:\n({", ".join(valid_file_extensions)})'))
         return False
     else:
