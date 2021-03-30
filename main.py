@@ -59,7 +59,7 @@ sample_param_dict_list = [
 
 # Week 10
 # Some sample values
-for sample_param_dict in sample_param_dict_list:
-    print(average.average_to(sample_param_dict['list_param'], sample_param_dict['index_to']))
+#for sample_param_dict in sample_param_dict_list:
+#    print(average.average_to(sample_param_dict['list_param'], sample_param_dict['index_to']))
 
 
