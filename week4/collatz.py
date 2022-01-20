@@ -25,7 +25,6 @@ def collatz():
                 input_int = input_int * 3 + 1
             # Remove trailing zeros for final output
             result_str += str(f' {input_int}').strip('.0')
-        print(result_str)
-    
+        print(result_str)  
     if not help.do_not_replay():
         collatz()

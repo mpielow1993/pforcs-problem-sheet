@@ -1,0 +1,98 @@
+* Week 2
+
+    - Write a program that calculates somebody's Body Mass Index (BMI).
+
+    - The inputs are the person's height in centimetres and weight in kilograms.
+    - The output  is their weight divided by their height in metres squared.
+    
+        $ python bmi.py
+        
+        Enter weight: 65
+        Enter height: 180
+        BMI is 20.06.
+
+* Week 3
+
+    - Write a program (bitcoin.py) that prints out todays bitcoin price in dollars.
+
+* Week 4
+
+    - Write a program that asks the user to input any positive integer and outputs the 
+    successive values of the following calculation.
+    - At each step calculate the next value by taking the current value and, if it is even, 
+    divide it by two, but if it is odd, multiply it by three and add one.
+    - Have the program end if the current value is one.
+
+        $ python collatz.py
+
+        Please enter a positive integer: 10
+        10 5 16 8 4 2 1
+
+* Week 5
+
+    - Write a program that takes a positive floating-point number as input and outputs an approximation 
+    of its square root.
+    - You should create a function called <tt>sqrt</tt> that does this.
+    - I am asking you to create your own sqrt function and not to use the built in functions x ** .5 
+    or math.sqrt(x)
+    - I suggest that you look at the newton method at estimating square roots
+
+        $ python squareroot.py
+
+        Please enter a positive number: 14.5
+        The square root of 14.5 is approx. 3.8.
+
+* Week 6
+
+    - Write a program that reads in a text file and outputs the number of e's it contains.
+    - The program should take the filename from an argument on the command line.
+
+        $ python es.py moby-dick.txt
+        116960
+
+* Week 7
+
+    - Write a program called extract-url.py, that will extract the URLs from an access.log file.
+    - ie The part of the URL that is stored in the access.log file, complete with the query parameters (I am aware that the host name is not stored in this file, the referring host is)
+
+    - The program should store the URLs as strings in a list
+
+        [
+        '/cart.do?action=view&itemId=EST-6&productId=SC-MG-G10&JSESSIONID=SD5SL9FF2ADFF4958',
+        '/category.screen?categoryId=SHOOTER&JSESSIONID=SD7SL9FF5ADFF5066'
+        ]
+
+    - Extra (This is extra work for few marks so think about if it is worth doing)
+    - Store the URLs as a Dictionary object in the list with the resource and parameter names and values separated out eg
+
+        [ 
+            {
+                'resource':'cart.do', 
+                'parameters':{
+                    'action':'view',
+                    'itemId':'EST-6',
+                    'productId':'SC-MG-G10'
+                    'JSESSIONID':'SD5SL9FF2ADFF4958'
+                }
+            },
+            #next dictionary object
+        ]
+
+* Week 8
+
+    - Write a program called plottask.py that displays a plot of the functions f(x)=x, g(x)=x2 and h(x)=x3 in the range [0, 4] on the one set of axes.
+    - Some marks will be given for making the plot look nice.
+
+* Week 9
+
+    - Work out the amount of data each sessionId downloaded in any given day
+    - Create a plot of this (type of your choice)
+
+* Week 10
+
+    - Write a (bullet proof) function called averageTo(aList, toIndex)
+    - The function should take in a list and an index. 
+    - The function will return the average of the numbers upto and including the toIndex in the aList.
+    - The test code can be in the same file or different file.
+
+* Week 10

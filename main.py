@@ -34,7 +34,7 @@ sample_param_dict_list = [
 # 
 
 # Week 2
-# #bmi.calculate_bmi()
+#bmi.calculate_bmi()
 
 # Week 3
 #bitcoin.get_current_bitcoin_price()
@@ -46,7 +46,7 @@ sample_param_dict_list = [
 #sqrt.estimate_sqrt()
 
 # Week 6
-#es.get_number_of_pattern_occurrences()
+es.get_number_of_pattern_occurrences()
 
 # Week 7
 #extract_url.extract_urls()
